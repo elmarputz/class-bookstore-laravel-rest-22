@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $name = "Fritz";
-    /* return view('welcome', [
-        "name" => $name
-    ]); */
-    return view('welcome', compact('name'));
+    $books = DB::table('books')->get();
+    return view('books.index', compact('books'));
+});
+
+Route::get('/books/{id}', function ($id) {
+    $book = DB::table('books')->find($id);
+    return view('books.show', compact('book'));
 });
