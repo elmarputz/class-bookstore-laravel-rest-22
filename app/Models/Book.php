@@ -29,4 +29,8 @@ class Book extends Model
         return $this->hasMany(Image::class);
     }
 
+    public function user() : BelongsTo {
+        return $this->belongsTo(User::class);
+    }
+
 }
