@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 
+use App\Models\Book;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -17,26 +18,14 @@ class BooksTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('books')->insert([
-            'title' => Str::random(100),
-            'isbn' => Str::random(20),
-            'subtitle' => Str::random(100),
-            'rating' => 4,
-            'published' => new DateTime(),
-            'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s"),
+        $book = new Book;
+        $book->title = "Herr der Ringe";
+        $book->isbn = Str::random(20);
+        $book->subtitle = Str::random(100);
+        $book->rating = 4;
+        $book->description = 'Letzer Teil der Reihe';
+        $book->published = new DateTime();
+        $book->save();
 
-        ]);
-
-        DB::table('books')->insert([
-            'title' => Str::random(100),
-            'isbn' => Str::random(20),
-            'subtitle' => Str::random(100),
-            'rating' => 4,
-            'published' => new DateTime(),
-            'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s"),
-
-        ]);
     }
 }
