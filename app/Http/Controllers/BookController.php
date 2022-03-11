@@ -33,8 +33,23 @@ class BookController extends Controller
             response()->json(false, 200);
     }
 
+   /**
+    * find book by search term
+    * SQL injection is prevented by default, because Eloquent
+    * uses PDO parameter binding
+    */
+   public function findBySearchTerm(string $searchTerm) {
+       $book = Book::with(['authors', 'images', 'user'])
+                   ->where('title', 'LIKE', '%' . $searchTerm. '%')
+                   ->orWhere('subtitle' , 'LIKE', '%' . $searchTerm. '%')
+                   ->orWhere('description' , 'LIKE', '%' . $searchTerm. '%')
 
-    public function show(Book $book) {
-        // return view('books.show', compact('book'));
-    }
+                   /* search term in authors name */
+                   ->orWhereHas('authors', function($query) use ($searchTerm) {
+                       $query->where('firstName', 'LIKE', '%' . $searchTerm. '%')
+                            ->orWhere('lastName', 'LIKE',  '%' . $searchTerm. '%');
+                        })->get();
+       return $book;
+   }
+
 }
