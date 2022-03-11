@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="947812be-3046-4fc9-a8a6-6443d8c46265" name="hetzner" url="https://bookstore22.putz.kwmhgb.at">
+        <fileTransfer rootFolder="/usr/home/siwyhq/public_html/kwm-ba/06-sem/webprog/bookstore22" accessType="SFTP" host="putz.kwmhgb.at" port="222" sshConfigId="74b19699-2c2a-46f6-8001-79deb94aaa45" sshConfig="siwyhq@putz.kwmhgb.at:222 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
