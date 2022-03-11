@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 
 use App\Models\Book;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -19,6 +20,10 @@ class BooksTableSeeder extends Seeder
    $book->rating = 10;
    $book->description = "Letzter Teil der Trilogie";
    $book->published = new DateTime();
+
+   $user = User::all()->first();
+   $book->user()->associate($user);
+
    $book->save();
 
    // add images to book
