@@ -20,6 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('books',[BookController::class,'index']);
+Route::post('books', [BookController::class,'save']);
+
 Route::get('books/{isbn}', [BookController::class,'findByISBN']);
 Route::get('books/checkisbn/{isbn}', [BookController::class,'checkISBN']);
 Route::get('books/search/{searchTerm}', [BookController::class,'findBySearchTerm']);
