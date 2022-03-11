@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 
+use App\Models\Author;
 use App\Models\Book;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -24,6 +25,7 @@ class BooksTableSeeder extends Seeder
    $user = User::all()->first();
    $book->user()->associate($user);
 
+
    $book->save();
 
    // add images to book
@@ -35,6 +37,10 @@ class BooksTableSeeder extends Seeder
    $image2->title = "Cover 2";
    $image2->url = "https://images-eu.ssl-images-amazon.com/images/I/516KV5tjulL._AC_US327_FMwebp_QL65_.jpg";
    $book->images()->saveMany([$image1,$image2]);
+
+   $authors = Author::all()->pluck('id');
+   $book->authors()->sync($authors);
+
    $book->save();
   }
 }
