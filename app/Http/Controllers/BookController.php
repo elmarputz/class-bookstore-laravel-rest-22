@@ -101,6 +101,68 @@ class BookController extends Controller
 
     }
 
+    public function update(Request $request, string $isbn) : JsonResponse
+    {
+
+        DB::beginTransaction();
+        try {
+            $book = Book::with(['authors', 'images', 'user'])
+                ->where('isbn', $isbn)->first();
+            if ($book != null) {
+                $request = $this->parseRequest($request);
+                $book->update($request->all());
+
+                //delete all old images
+                $book->images()->delete();
+                // save images
+                if (isset($request['images']) && is_array($request['images'])) {
+                    foreach ($request['images'] as $img) {
+                        $image = Image::firstOrNew(['url'=>$img['url'],'title'=>$img['title']]);
+                        $book->images()->save($image);
+                    }
+                }
+                //update authors
+
+                $ids = [];
+                if (isset($request['authors']) && is_array($request['authors'])) {
+                    foreach ($request['authors'] as $auth) {
+                        array_push($ids,$auth['id']);
+                    }
+                }
+                $book->authors()->sync($ids);
+                $book->save();
+
+            }
+            DB::commit();
+            $book1 = Book::with(['authors', 'images', 'user'])
+                ->where('isbn', $isbn)->first();
+            // return a vaild http response
+            return response()->json($book1, 201);
+        }
+        catch (\Exception $e) {
+            // rollback all queries
+            DB::rollBack();
+            return response()->json("updating book failed: " . $e->getMessage(), 420);
+        }
+    }
+
+    /**
+     * returns 200 if book deleted successfully, throws excpetion if not
+     */
+    public function delete(string $isbn) : JsonResponse
+    {
+        $book = Book::where('isbn', $isbn)->first();
+        if ($book != null) {
+            $book->delete();
+        }
+        else
+            throw new \Exception("book couldn't be deleted - it does not exist");
+        return response()->json('book (' . $isbn . ') successfully deleted', 200);
+
+    }
+
+
+
     private function parseRequest(Request $request) : Request {
 
         $date = new \DateTime($request->published);
