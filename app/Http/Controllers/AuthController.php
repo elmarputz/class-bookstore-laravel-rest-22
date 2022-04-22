@@ -20,6 +20,14 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
+    public function me() {
+        return response()->json(auth()->user());
+    }
+
+    public function logout() {
+        auth()->logout();
+        return response()->json(['message' => 'succesfully logged out']);
+    }
 
     protected function respondWithToken($token) {
         return response()->json([
