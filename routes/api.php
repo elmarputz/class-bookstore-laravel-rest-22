@@ -4,6 +4,7 @@ use App\Http\Controllers\BookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,6 +19,9 @@ use Illuminate\Http\JsonResponse;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+/* auth */
+Route::post('auth/login',[AuthController::class,'login']);
 
 Route::get('books',[BookController::class,'index']);
 Route::post('books', [BookController::class,'save']);
